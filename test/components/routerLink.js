@@ -1,24 +1,20 @@
 export default {
-  name: 'router-link',
+  name: "router-link",
   functional: true,
   props: {
     to: {
       type: String,
-      required: true
+      required: true,
     },
     tag: {
-      type: String
-    }
+      type: String,
+    },
   },
-  render(h, context) {
-    let tag = context.tag || 'a'
+  render(h, ctx) {
+    let tag = ctx.tag || "a";
     const clickHandler = () => {
-      context.parent.$router.push(context.to)
-    }
-    return h(tag, {
-      on: {
-        click: clickHandler
-      }
-    }, context.slots().default)
-  }
-}
+      ctx.parent.$router.push(ctx.props.to);
+    };
+    return h(tag, { on: { click: clickHandler } }, ctx.slots().default);
+  },
+};

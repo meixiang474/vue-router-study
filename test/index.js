@@ -1,39 +1,42 @@
-import install from './install'
-import createMatcher from '../vue-router/create-matcher'
-import HashHistory from '../vue-router/history/hashHistory'
-import BrowserHistory from '../vue-router/history/browserHistory'
+import install, { Vue } from "./install";
+import createMatcher from "./create-matcher";
+import HashHistory from "./history/HashHistory";
+import BrowserHistory from "./history/BrowserHistory";
+
 class VueRouter {
   constructor(options) {
-    this.matcher = createMatcher(options.routes || [])
-    this.mode = options.mode
-    switch(this.mode) {
-      case 'hash':
-        this.history = new HashHistory(this)
-        break
-      case 'history':
-        this.history = new BrowserHistory(this)
+    this.matcher = createMatcher(options.routes || []);
+    this.mode = options.mode || "hash";
+    switch (this.mode) {
+      case "hash":
+        this.history = new HashHistory(this);
+        break;
+      case "history":
+        this.history = new BrowserHistory(this);
+        break;
     }
-    this.beforeHooks = []
+    this.beforeHooks = [];
   }
   match(location) {
-    return this.matcher.match(location)
+    return this.matcher.match(location);
   }
   init(app) {
-    const history = this.history
-    let setupHashListener = () => {
-      history.setupListener()
-    }
-    history.transitionTo(history.getCurrentLocation(), setupHashListener)
+    const history = this.history;
+    const setupHashListener = () => {
+      history.setupListener();
+    };
+    history.transitionTo(history.getCurrentLocation(), setupHashListener);
     history.listen((route) => {
-      app._route = route
-    })
+      app._route = route;
+    });
   }
   push(location) {
-    window.location.hash = location
+    window.location.hash = location;
   }
   beforeEach(fn) {
-    this.beforeHooks.push(fn)
+    this.beforeHooks.push(fn);
   }
 }
-VueRouter.install = install
-export default VueRouter
+
+VueRouter.install = install;
+export default VueRouter;

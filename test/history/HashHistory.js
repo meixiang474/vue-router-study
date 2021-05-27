@@ -1,20 +1,22 @@
+import History from "./base";
+
 function ensureSlash() {
-  if(window.location.hash) {
-    return 
-  }
-  window.location.hash = '/'
+  if (window.location.hash) return;
+  window.location.hash = "/";
 }
-export default class Hashhistory extends History {
+
+export default class HashHistory extends History {
   constructor(router) {
-    super(router)
-    ensureSlash()
+    super(router);
+    this.router = router;
+    ensureSlash();
   }
   getCurrentLocation() {
-    return window.location.hash.slice(1)
+    return window.location.hash.slice(1);
   }
   setupListener() {
-    window.addEventListener('hashchange', () => {
-      this.transitionTo(this.getCurrentLocation())
-    })
+    window.addEventListener("hashchange", () => {
+      this.transitionTo(this.getCurrentLocation());
+    });
   }
 }
